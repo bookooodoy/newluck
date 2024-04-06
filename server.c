@@ -6,7 +6,7 @@
 /*   By: nraymond <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 08:10:35 by nraymond          #+#    #+#             */
-/*   Updated: 2024/04/06 14:26:23 by nraymond         ###   ########.fr       */
+/*   Updated: 2024/04/06 14:50:39 by nraymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	handler_sigusr(int signum, siginfo_t *info, void *context)
 	static char	c = 0xFF;
 	static int	bits = 0;
 	static int	pid = 0;
-	
+
 	(void)context;
 	if (info->si_pid)
 		pid = info->si_pid;
@@ -37,11 +37,12 @@ void	handler_sigusr(int signum, siginfo_t *info, void *context)
 					g_message_buffer.size = g_message_buffer.size * 2;
 				else
 					g_message_buffer.size = 1024;
-				g_message_buffer.buffer = ft_realloc(g_message_buffer.buffer, g_message_buffer.size);
+				g_message_buffer.buffer = ft_realloc(
+						g_message_buffer.buffer, g_message_buffer.size);
 				if (!g_message_buffer.buffer)
 				{
 					error(pid, NULL);
-					return;
+					return ;
 				}
 			}
 			g_message_buffer.buffer[g_message_buffer.index++] = c;

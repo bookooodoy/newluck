@@ -1,6 +1,8 @@
 CLIENT=client.c
+OBJS_CLIENT=client.o
 
 SERVER=server.c
+OBJS_SERVER=server.o
 
 SRCS=utils.c\
      server_utils.c\
@@ -16,17 +18,17 @@ OBJS=$(SRCS:.c=.o)
 
 all: client server
 
-client: $(OBJS) $(INC) $(CLIENT) Makefile
+client: $(OBJS) $(OBJS_CLIENT) $(INC)
 	$(CC) $(CFLAGS) $(CLIENT) $(OBJS) -o client
 
-server: $(OBJS) $(INC) $(CLIENT) Makefile
-	$(CC) $(CFLAGS) $(SERVER) $(SRCS) -o server
+server: $(OBJS) $(OBJS_SERVER) $(INC)
+	$(CC) $(CFLAGS) $(SERVER) $(OBJS) -o server
 
 %.o: %.c $(INC)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(RM) -rf $(OBJS)
+	$(RM) $(OBJS) $(OBJS_CLIENT) $(OBJS_SERVER)
 
 fclean: clean
 	$(RM) -rf client server

@@ -16,6 +16,8 @@ CFLAGS=-Werror -Wextra -Wall -g3
 
 OBJS=$(SRCS:.c=.o)
 
+bonus: all
+
 all: client server
 
 client: $(OBJS) $(OBJS_CLIENT) $(INC)

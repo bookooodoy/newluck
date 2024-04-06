@@ -6,7 +6,7 @@
 /*   By: nraymond <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 08:09:49 by nraymond          #+#    #+#             */
-/*   Updated: 2024/04/06 14:45:36 by nraymond         ###   ########.fr       */
+/*   Updated: 2024/04/06 19:16:55 by nraymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,7 @@ void	handler_sigusr(int signum)
 		exit(EXIT_FAILURE);
 	}
 	if (end)
-	{
-		ft_putstr_fd("Server sent signal back: message received\n", 2);
 		exit(EXIT_SUCCESS);
-	}
 }
 
 int	main(int argc, char **argv)

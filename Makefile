@@ -3,6 +3,8 @@ CLIENT=client.c
 SERVER=server.c
 
 SRCS=utils.c\
+     server_utils.c\
+     client_utils.c
 
 INC=minitalk.h
 

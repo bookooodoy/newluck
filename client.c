@@ -6,31 +6,18 @@
 /*   By: nraymond <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 08:09:49 by nraymond          #+#    #+#             */
-/*   Updated: 2024/04/06 13:15:59 by nraymond         ###   ########.fr       */
+/*   Updated: 2024/04/06 14:24:05 by nraymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	error(char *str)
+void	ft_error(char *str)
 {
 	if (str)
 		free(str);
 	ft_putstr_fd("Unexpected Error occured\n", 2);
 	exit(EXIT_FAILURE);
-}
-
-int	send_null(int pid, char *str)
-{
-	static int	i = 0;
-
-	if (i++ != 8)
-	{
-		if (kill(pid, SIGUSR1) == -1)
-			error(str);
-		return (0);
-	}
-	return (1);
 }
 
 int	send_bit(int pid, char *str)
@@ -42,7 +29,7 @@ int	send_bit(int pid, char *str)
 	if (str)
 		message = ft_strdup(str);
 	if (!message)
-		error(0);
+		ft_error(0);
 	if (pid)
 		s_pid = pid;
 	if (bits / 8 < (int)ft_strlen(message))
@@ -52,10 +39,10 @@ int	send_bit(int pid, char *str)
 			if (message[bits / 8] & (0x80 >> (bits % 8)))
 			{
 				if (kill(s_pid, SIGUSR2) == -1)
-					error(message);
+					ft_error(message);
 			}
 			else if (kill(s_pid, SIGUSR1) == -1)
-				error(message);
+				ft_error(message);
 			return (0);
 		}
 	}
@@ -82,20 +69,6 @@ void	handler_sigusr(int signum)
 		ft_putstr_fd("Server sent signal back: message received\n", 2);
 		exit(EXIT_SUCCESS);
 	}
-}
-
-int	check_input(int argc, char **argv)
-{
-	int	val;
-
-	if (argc != 3)
-		return (ft_putstr_fd("Incorrect number of arguments\n", 2), 0);
-	if (!argv[1][0] || !argv[2][0])
-		return (ft_putstr_fd("Empty arguments\n", 2), 0);
-	val = ft_atoi(argv[1]);
-	if (val <= 0)
-		return (ft_putstr_fd("Error with PID\n", 2), 0);
-	return (1);
 }
 
 int	main(int argc, char **argv)

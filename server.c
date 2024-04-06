@@ -6,7 +6,7 @@
 /*   By: nraymond <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 08:10:35 by nraymond          #+#    #+#             */
-/*   Updated: 2024/04/06 14:56:30 by nraymond         ###   ########.fr       */
+/*   Updated: 2024/04/06 17:37:36 by nraymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	set_gmsg(int c, int pid)
 		if (g_message_buffer.size)
 			g_message_buffer.size = g_message_buffer.size * 2;
 		else
-			g_message_buffer.size = 1024;
+			g_message_buffer.size = MAX_BUFFER_SIZE;
 		g_message_buffer.buffer = ft_realloc(
 				g_message_buffer.buffer, g_message_buffer.size);
 		if (!g_message_buffer.buffer)
@@ -57,6 +57,17 @@ void	handler_sigusr(int signum, siginfo_t *info, void *context)
 	}
 	if (kill(pid, SIGUSR1) == -1)
 		error(pid, NULL);
+}
+
+void	ft_putnbr(ssize_t pid)
+{
+	char	p;
+
+	if (pid >= 10)
+		ft_putnbr(pid / 10);
+	p = (pid % 10) + '0';
+	if (write(1, &p, 1) == -1)
+		exit(EXIT_FAILURE);
 }
 
 int	main(void)

@@ -6,7 +6,7 @@
 /*   By: nraymond <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 08:19:13 by nraymond          #+#    #+#             */
-/*   Updated: 2024/04/06 15:56:19 by nraymond         ###   ########.fr       */
+/*   Updated: 2024/04/06 16:35:47 by nraymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,6 @@ char	*ft_strncpy(char *dst, const char *src, size_t size)
 	size_t	index;
 
 	index = 0;
-	if (!src)
-	{
-		while (index < size)
-			dst[index++] = 0;
-		return (dst);
-	}
 	if (size > 0)
 	{
 		while (src[index] && (index < (size - 1)))
@@ -91,9 +85,6 @@ char	*ft_strncpy(char *dst, const char *src, size_t size)
 			dst[index] = src[index];
 			index++;
 		}
-		while (index < size - 1)
-			dst[index++] = 0;
 	}
-	dst[index] = 0;
 	return (dst);
 }

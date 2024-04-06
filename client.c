@@ -22,7 +22,7 @@ void	ft_error(char *str)
 
 int	ctoa(int pid, char *str)
 {
-	static char	*message = 0;
+	static char	*message = (void *)0;
 	static int	s_pid = 0;
 	static int	bits = -1;
 

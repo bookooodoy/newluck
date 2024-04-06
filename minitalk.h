@@ -6,14 +6,14 @@
 /*   By: nraymond <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 08:11:04 by nraymond          #+#    #+#             */
-/*   Updated: 2024/04/06 14:49:50 by nraymond         ###   ########.fr       */
+/*   Updated: 2024/04/06 17:37:52 by nraymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINITALK_H
 # define MINITALK_H
 
-# define MAX_BUFFER_SIZE 1024
+# define MAX_BUFFER_SIZE 2048
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -32,6 +32,7 @@ char	*ft_realloc(char *ptr, size_t newsize);
 void	error(int pid, char *str);
 void	print_string(t_buf *db);
 void	ft_putnbr(ssize_t pid);
+void	*ft_calloc(size_t nmemb, size_t size);
 
 //client
 int		send_null(int pid, char *str);

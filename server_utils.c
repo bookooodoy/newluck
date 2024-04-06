@@ -6,7 +6,7 @@
 /*   By: nraymond <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:20:25 by nraymond          #+#    #+#             */
-/*   Updated: 2024/04/06 15:56:47 by nraymond         ###   ########.fr       */
+/*   Updated: 2024/04/06 16:28:23 by nraymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ char	*ft_realloc(char *ptr, size_t newsize)
 	char	*newptr;
 
 	if (ptr == NULL)
-		return (malloc(sizeof(char) * newsize + 1));
+		return (ft_calloc(sizeof(char), newsize + 1));
 	if (!newsize)
 		return (ptr);
-	newptr = malloc(sizeof(char) * newsize + 1);
+	newptr = ft_calloc(sizeof(char), newsize + 1);
 	if (!newptr)
 		return (NULL);
 	ft_strncpy(newptr, ptr, newsize);
@@ -60,13 +60,28 @@ void	print_string(t_buf *db)
 	}
 }
 
-void	ft_putnbr(ssize_t pid)
+void	ft_bzero(void *s, size_t n)
 {
-	char	p;
+	unsigned char	*p;
+	size_t			index;
 
-	if (pid >= 10)
-		ft_putnbr(pid / 10);
-	p = (pid % 10) + '0';
-	if (write(1, &p, 1) == -1)
-		exit(EXIT_FAILURE);
+	p = s;
+	index = 0;
+	while (index < n)
+		p[index++] = '\0';
+}
+
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	char	*tab;
+
+	if ((nmemb == 0) || (size == 0))
+		return (malloc(0));
+	else if ((nmemb * size) / size != nmemb)
+		return ((void *)0);
+	tab = malloc(size * nmemb);
+	if (!tab)
+		return (NULL);
+	ft_bzero(tab, (nmemb * size));
+	return ((void *)tab);
 }

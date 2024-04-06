@@ -6,7 +6,7 @@
 /*   By: nraymond <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 08:09:49 by nraymond          #+#    #+#             */
-/*   Updated: 2024/04/06 14:24:05 by nraymond         ###   ########.fr       */
+/*   Updated: 2024/04/06 14:45:36 by nraymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_error(char *str)
 	exit(EXIT_FAILURE);
 }
 
-int	send_bit(int pid, char *str)
+int	ctoa(int pid, char *str)
 {
 	static char	*message = 0;
 	static int	s_pid = 0;
@@ -32,24 +32,20 @@ int	send_bit(int pid, char *str)
 		ft_error(0);
 	if (pid)
 		s_pid = pid;
-	if (bits / 8 < (int)ft_strlen(message))
+	if ((bits / 8 < (int)ft_strlen(message)) && message[++bits / 8])
 	{
-		if (message[++bits / 8])
+		if (message[bits / 8] & (0x80 >> (bits % 8)))
 		{
-			if (message[bits / 8] & (0x80 >> (bits % 8)))
-			{
-				if (kill(s_pid, SIGUSR2) == -1)
-					ft_error(message);
-			}
-			else if (kill(s_pid, SIGUSR1) == -1)
+			if (kill(s_pid, SIGUSR2) == -1)
 				ft_error(message);
-			return (0);
 		}
+		else if (kill(s_pid, SIGUSR1) == -1)
+			ft_error(message);
+		return (0);
 	}
 	if (!send_null(s_pid, message))
 		return (0);
-	free(message);
-	return (1);
+	return (free(message), 1);
 }
 
 void	handler_sigusr(int signum)
@@ -58,7 +54,7 @@ void	handler_sigusr(int signum)
 
 	end = 0;
 	if (signum == SIGUSR1)
-		end = send_bit(0, 0);
+		end = ctoa(0, 0);
 	else if (signum == SIGUSR2)
 	{
 		ft_putstr_fd("Error from server: exiting the program\n", 2);
@@ -80,7 +76,7 @@ int	main(int argc, char **argv)
 	}
 	signal(SIGUSR1, handler_sigusr);
 	signal(SIGUSR2, handler_sigusr);
-	send_bit(ft_atoi(argv[1]), argv[2]);
+	ctoa(ft_atoi(argv[1]), argv[2]);
 	while (1)
 		pause();
 }

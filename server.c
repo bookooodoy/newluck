@@ -6,13 +6,32 @@
 /*   By: nraymond <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 08:10:35 by nraymond          #+#    #+#             */
-/*   Updated: 2024/04/06 14:50:39 by nraymond         ###   ########.fr       */
+/*   Updated: 2024/04/06 14:56:30 by nraymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
 t_buf	g_message_buffer = {.buffer = NULL, .size = 0, .index = 0};
+
+void	set_gmsg(int c, int pid)
+{
+	if (g_message_buffer.index >= g_message_buffer.size)
+	{
+		if (g_message_buffer.size)
+			g_message_buffer.size = g_message_buffer.size * 2;
+		else
+			g_message_buffer.size = 1024;
+		g_message_buffer.buffer = ft_realloc(
+				g_message_buffer.buffer, g_message_buffer.size);
+		if (!g_message_buffer.buffer)
+		{
+			error(pid, NULL);
+			return ;
+		}
+	}
+	g_message_buffer.buffer[g_message_buffer.index++] = c;
+}
 
 void	handler_sigusr(int signum, siginfo_t *info, void *context)
 {
@@ -30,23 +49,7 @@ void	handler_sigusr(int signum, siginfo_t *info, void *context)
 	if (++bits == 8)
 	{
 		if (c)
-		{
-			if (g_message_buffer.index >= g_message_buffer.size)
-			{
-				if (g_message_buffer.size)
-					g_message_buffer.size = g_message_buffer.size * 2;
-				else
-					g_message_buffer.size = 1024;
-				g_message_buffer.buffer = ft_realloc(
-						g_message_buffer.buffer, g_message_buffer.size);
-				if (!g_message_buffer.buffer)
-				{
-					error(pid, NULL);
-					return ;
-				}
-			}
-			g_message_buffer.buffer[g_message_buffer.index++] = c;
-		}
+			set_gmsg(c, pid);
 		else
 			print_string(&g_message_buffer);
 		bits = 0;
